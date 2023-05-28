@@ -1,0 +1,10 @@
+export GO111MODULE=on
+# Set the GOPROXY environment variable
+export GOPRIVATE=gitlab.jiagouyun.com/*
+
+export GOPROXY=https://goproxy.io
+
+# 将 go 代码 clone 到 GOPATH 里面
+export GOPATH=/home/tan/go
+export GOROOT=/usr/local/go
+export PATH=$GOROOT/bin:~/go/bin:$PATH 
