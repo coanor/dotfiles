@@ -193,7 +193,18 @@ set tw=500
 set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
+set nu "Line numbers 
 
+""""""""""""""""""""""""""""""
+" => Commands abbrevs
+""""""""""""""""""""""""""""""
+
+cnoreabbrev mk make
+cnoreabbrev te tabe
+cnoreabbrev gr go run
+cnoreabbrev cb cargo build
+cnoreabbrev cr cargo run
+cnoreabbrev ct cargo test
 
 """"""""""""""""""""""""""""""
 " => Visual mode related
