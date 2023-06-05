@@ -125,6 +125,7 @@ export KERNEL_SRC_VERSION=$(uname -r)
 export DK_BPF_KERNEL_SRC_PATH=/usr/src/linux-headers-${KERNEL_SRC_VERSION}
 source ~/.bash_alias
 source ~/.golang
+source ~/.rust
 source ~/.gitprompt.sh
 
 export NVM_DIR="$HOME/.nvm"

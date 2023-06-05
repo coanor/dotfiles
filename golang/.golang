@@ -8,3 +8,7 @@ export GOPROXY=https://goproxy.io
 export GOPATH=/home/tan/go
 export GOROOT=/usr/local/go
 export PATH=$GOROOT/bin:~/go/bin:$PATH 
+
+# alias
+alias gtr="go test -test.v -run"
+alias gtb="go test -run ^$ -benchmem -bench"

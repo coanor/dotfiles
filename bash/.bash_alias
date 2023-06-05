@@ -4,12 +4,11 @@ alias s='sudo'
 alias v='vim'
 alias vv='sudo vim'
 alias mk='make'
-alias cddk='cd ~/go/src/gitlab.jiagouyun.com/cloudcare-tools/datakit'
-alias cdguance='cd ~/go/src/github.com/GuanceCloud'
-alias gtr="go test -test.v -run"
-alias gtb="go test -run ^$ -benchmem -bench"
 
+# Datakit alias
 alias ddk="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-linux-amd64/datakit"
 alias dkm="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-linux-amd64/datakit monitor -R 3s"
 alias cdk="cd /home/tan/go/src/gitlab.jiagouyun.com/cloudcare-tools/datakit"
 alias ut='REMOTE_HOST=10.200.14.142 make ut DATAWAY_URL="https://openway.guance.com/v1/write/logging?token=tkn_2af4b19d7f5a489fa81f0fff7e63b588"'
+alias cddk='cd ~/go/src/gitlab.jiagouyun.com/cloudcare-tools/datakit'
+alias cdguance='cd ~/go/src/github.com/GuanceCloud'

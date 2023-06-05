@@ -1,0 +1,8 @@
+#
+# alias
+#
+alias ct='cargo test'
+alias ct_all='cargo test -- --include-ignored'
+alias ctp='cargo test -- --show-output'
+alias ct_xthread='cargo test -- --test-thread='
+alias ct_ign='cargo test -- --ignored'
