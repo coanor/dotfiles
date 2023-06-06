@@ -1,9 +1,13 @@
+# commone alias
 alias ai='sudo apt install'
 alias dkr='sudo docker'
 alias s='sudo'
 alias v='vim'
 alias vv='sudo vim'
 alias mk='make'
+alias xls='ls -alth'
+# ag: ignore rust tags file
+alias xag='ag --ignore=rusty-tags.vi'
 
 # Datakit alias
 alias ddk="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-linux-amd64/datakit"

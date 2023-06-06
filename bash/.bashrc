@@ -123,9 +123,10 @@ export PATH=$PATH:/usr/local/go/bin
 export GOPROXY=https://goproxy.cn,direct
 export KERNEL_SRC_VERSION=$(uname -r)
 export DK_BPF_KERNEL_SRC_PATH=/usr/src/linux-headers-${KERNEL_SRC_VERSION}
+
 source ~/.bash_alias
-source ~/.golang
-source ~/.rust
+source ~/.golang_alias
+source ~/.rust_alias
 source ~/.gitprompt.sh
 
 export NVM_DIR="$HOME/.nvm"
