@@ -9,7 +9,9 @@ alias v='vim'
 alias vv='sudo vim'
 alias ta='tmux att' # attach to exist tmux
 alias xag='ag --ignore=rusty-tags.vi' # ignore rust tags file
-alias xls='ls -alth'
+alias l='ls -alth'
+alias ..='cd ../'
+alias bat='batcat'
 
 # Datakit alias
 alias ddk="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-linux-amd64/datakit"

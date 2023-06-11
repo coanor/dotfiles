@@ -7,3 +7,4 @@ alias ctp='cargo test -- --show-output'
 alias ct_xthread='cargo test -- --test-thread='
 alias ct_ign='cargo test -- --ignored'
 alias rtags='rusty-tags vi'
+alias crb='cargo run --bin' # run example/tests under src/bin/*.rs
