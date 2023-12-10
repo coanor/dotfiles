@@ -192,7 +192,14 @@ __watch_dk_metrics() {
 	then
 		sleep=${2}
 	fi
-	watch -n ${sleep} "curl -s http://localhost:19529/metrics | grep -a ${1}"
+
+	host="localhost:19529"
+	if [ $# -gt 2 ]
+	then
+		host=$3
+	fi
+
+	watch -n ${sleep} "curl -s http://${host}/metrics | grep -a ${1}"
 }
 
 alias wdk='__watch_dk_metrics'
