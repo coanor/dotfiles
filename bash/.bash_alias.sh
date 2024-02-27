@@ -9,14 +9,33 @@ __gtp() {
 	then
 		port=${2}
 	fi
+
+	source ~/.golang-1.20
+
 	go tool pprof -http=${port} ${1}
 }
 alias gtp='__gtp'
 
+__gtb() {
+	if [ $# -gt 1 ]
+	then
+		LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -run XXX -test.benchmem -test.v -cpuprofile=$1.cpu.out -memprofile=$1.mem.out -benchtime=$2x -bench $1
+	else
+		LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -run XXX -test.benchmem -test.v -cpuprofile=$1.cpu.out -memprofile=$1.mem.out  -bench $1
+	fi
+}
+
+alias gtb='__gtb'
+
+#alias gtb='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -run XXX -test.benchmem -test.v -cpuprofile=cpu.out -memprofile=mem.out -bench'
+
 alias gr='go run'
 alias gv='go vet ./...'
+
 alias gmod2vendor='GO111MODULE=on go mod vendor -v'
 alias gmodinit='GO111MODULE=on go mod init'
+alias gmodwhy='go mod why -m'
+
 alias gget='GO111MODULE=on go get -v'
 alias gget_noprx='GOPROXY="" GO111MODULE=on go get -v'
 alias getg='GO111MODULE=off go get -v'
@@ -41,11 +60,20 @@ alias gtrnolog='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -timeout 99
 alias wingtr='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix GOOS=windows go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run'
 alias gta='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -timeout 9999900m -cover -coverprofile=/tmp/coverage.out ./...'
 alias gtf='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -test.v -run=XXX -cover -fuzztime 1m -fuzz'
-alias gtra='LOGGER_PATH=nul UT_EXCLUDE_INTEGRATION_TESTING=on CGO_CFLAGS=-Wno-undef-prefix go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run .'
+
+__gtra() {
+	LOGGER_PATH=nul \
+		UT_EXCLUDE_INTEGRATION_TESTING=on \
+		CGO_CFLAGS=-Wno-undef-prefix \
+		go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run . | tee gtra.out # output to local gtra.out
+}
+
+
+alias gtra='__gtra'
+
 alias gtrall='CGO_CFLAGS=-Wno-undef-prefix go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run .'
 alias gtrb='CGO_CFLAGS=-Wno-undef-prefix go test -test.v -timeout 9999900m -run -bench'
 alias gtrll='CGO_CFLAGS=-Wno-undef-prefix go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run'
-alias gtb='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -run XXX -test.benchmem -test.v -bench'
 
 # bench with time 10s
 alias gtbt='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -run XXX -test.benchmem -benchtime=10s -test.v -bench'
@@ -73,14 +101,15 @@ alias githist='git log --follow -p --stat --'
 alias git-cmt-cnt='git rev-list HEAD --count'
 alias gitbr='git branch --sort=-committerdate'
 alias gpo='git push origin $(git rev-parse --abbrev-ref HEAD)'
+alias fgpo='git push -f origin $(git rev-parse --abbrev-ref HEAD)'
 alias gbo='git pull origin $(git rev-parse --abbrev-ref HEAD)'
 
-alias v='vim'
+alias v='/usr/local/bin/vim'
 alias vv='sudo vim'
 alias vx='vim /tmp/x'
 alias vy='vim /tmp/y'
 alias vz='vim /tmp/z'
-alias ll='ls -lh'
+alias ll='ls -alth'
 alias lsdata='ls -alth'
 alias lsm='stat -c "%a %n"'
 alias mk='make'
@@ -170,19 +199,53 @@ alias dk="sudo datakit"
 
 alias ta='tmux att'
 
-alias ddk_not_send="ENV_DEBUG_DO_NOT_BUILD_POINT_REQUEST=on DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit 2>&1 | tee ~/datakit/stdout-stderr"
-alias ddk_http_fail="ENV_DEBUG_HTTP_FAIL_RATIO=70 ENV_DEBUG_HTTP_FAIL_DURATION=2h DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit 2>&1 | tee ~/datakit/stdout-stderr"
-alias ddk="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit 2>&1 | tee ~/datakit/stdout-stderr"
-alias dk_dbginput="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit debug --input-conf"
+#
+# Debugging datakit
+#
+__ddk() {
+	DK_DEBUG_WORKDIR=~/datakit \
+		DK_DEBUG_MAX_RUN_DURATION=24h \
+		./dist/datakit-darwin-arm64/datakit 2>&1 | tee ~/datakit/stdout-stderr
+}
+
+alias ddk_http_fail="ENV_DEBUG_HTTP_FAIL_RATIO=70 ENV_DEBUG_HTTP_FAIL_DURATION=2h __ddk"
+alias ddk_with_expire="__ddk"
+alias ddk_with_expire_no_ptpool="DK_DEBUG_NO_POINT_POOL=1 __ddk"
+alias ddk_with_expire_no_ptpool_with_gc="DK_DEBUG_GC_DURATION=10s DK_DEBUG_MAX_RUN_DURATION=3m __ddk"
+
+alias ddk="__ddk"
+alias pbddk="ENV_POINT_PROTOBUF=1 __ddk"
+alias dk_dbginput="DK_DEBUG_WORKDIR=~/datakit __ddk_flag_debug ./dist/datakit-darwin-arm64/datakit debug --input-conf"
+
 alias ddql="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit dql"
-alias pbddk="ENV_POINT_PROTOBUF=1 DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit 2>&1 | tee ~/datakit/stdout-stderr"
 alias dk="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit"
-alias dkm="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit monitor -R3s --log ~/datakit/cmds.log"
-alias dkmv="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit monitor -V -R3s --log ~/datakit/cmds.log"
-alias dkmm="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit monitor -R3s --log ~/datakit/cmds.log -M"
+alias dkm="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit monitor -R3s --log ~/datakit/cmds.log --dump-metrics"
+alias dkmv="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit monitor -V -R3s --log ~/datakit/cmds.log --dump-metrics"
+alias dkmm="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit monitor -R3s --log ~/datakit/cmds.log --dump-metrics -M "
 alias dkpm="curl -s http://localhost:19529/metrics | grep"
 alias ddw="DW_DEBUG_WORKDIR=~/dataway ./build/dataway-darwin-arm64/dataway -cfg ~/dataway/dw.yaml"
 alias ddw_docker="DW_DEBUG_WORKDIR=~/dataway DW_HTTP_CLIENT_TRACE=on DW_BIND=0.0.0.0:9528 DW_PROM_LISTEN=0.0.0.0:9091 DW_LOG_LEVEL=debug DW_REMOTE_HOST=https://kodo.guance.com:443 DW_UUID=not-set DW_TOKEN=tkn_2af4b19d7f5a489fa81f0fff7e63b588 DW_DEBUG_WORKDIR=~/dataway ./build/dataway-darwin-arm64/dataway --docker"
+
+__ddk_docker() {
+	ENV_RECORDER_ENCODING=v1             \
+		ENV_ENABLE_RECORDER=on             \
+		ENV_RECORDER_CATEGORIES=metric     \
+		ENV_DEFAULT_ENABLED_INPUTS=dk      \
+		ENV_PPROF_LISTEN=localhost:26060   \
+		ENV_HTTP_LISTEN=localhost:29529    \
+		ENV_INPUT_DK_ENABLE_ALL_METRICS=on \
+		DK_DEBUG_WORKDIR=~/datakit-docker  \
+		./dist/datakit-darwin-arm64/datakit run -C
+}
+
+__dkm_docker() {
+	DK_DEBUG_WORKDIR=~/datakit-docker \
+		./dist/datakit-darwin-arm64/datakit monitor -R3s --log ~/datakit-docker/cmds.log
+}
+
+alias ddk_docker="__ddk_docker"
+alias dkm_docker="__dkm_docker"
+
 alias pj='python -m json.tool'
 alias rmf='rm -rf'
 
@@ -225,5 +288,14 @@ alias entrans='trans -e bing -no-autocorrect :en'
 
 # k8s
 alias kc='kubectl'
+
+alias ds_dk_restart='kubectl rollout restart daemonset datakit -n datakit'
+alias dkpods='kubectl get pod -n datakit'
+
+__poddk() {
+	kubectl exec --stdin --tty $1 -n datakit -- /bin/bash
+}
+
+alias poddk='__poddk'
 
 alias ctags="`brew --prefix`/bin/ctags"
