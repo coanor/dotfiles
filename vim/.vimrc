@@ -35,6 +35,7 @@ set history=500
 
 " Enable filetype plugins
 filetype plugin on
+filetype plugin indent on
 filetype indent on
 
 " Set to auto read when a file is changed from the outside
@@ -127,6 +128,11 @@ endif
 " Add a bit extra margin to the left
 set foldcolumn=1
 
+" Fold code blocks
+set foldenable
+set foldlevel=1
+set foldmethod=syntax
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -158,7 +164,7 @@ if has("gui_running")
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
+set encoding=UTF-8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
@@ -192,7 +198,7 @@ set tw=500
 
 set ai "Auto indent
 set si "Smart indent
-set wrap "Wrap lines
+set nowrap "Wrap lines
 set nu "Line numbers 
 
 """"""""""""""""""""""""""""""
@@ -400,3 +406,28 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+
+
+call plug#begin()
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'preservim/nerdtree'
+Plug 'rust-lang/rust.vim'
+Plug 'ryanoasis/vim-devicons' " nerd tree icon
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'dense-analysis/ale'
+"Plug 'prabirshrestha/vim-lsp'
+call plug#end()
+
+" rust
+let g:rustfmt_autosave = 1
+
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-N> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+if exists("g:loaded_webdevicons")
+    call webdevicons#refresh()
+endif
+
+set guifont="Hack Nerd Font Mono"

@@ -104,7 +104,7 @@ alias gpo='git push origin $(git rev-parse --abbrev-ref HEAD)'
 alias fgpo='git push -f origin $(git rev-parse --abbrev-ref HEAD)'
 alias gbo='git pull origin $(git rev-parse --abbrev-ref HEAD)'
 
-alias v='/usr/local/bin/vim'
+alias v='vim'
 alias vv='sudo vim'
 alias vx='vim /tmp/x'
 alias vy='vim /tmp/y'
@@ -298,4 +298,4 @@ __poddk() {
 
 alias poddk='__poddk'
 
-alias ctags="`brew --prefix`/bin/ctags"
+#alias ctags="`brew --prefix`/bin/ctags"

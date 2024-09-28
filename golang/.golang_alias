@@ -6,7 +6,7 @@ export GOPROXY=https://goproxy.io
 
 # 将 go 代码 clone 到 GOPATH 里面
 export GOPATH=/home/tan/go
-export GOROOT=/usr/local/go
+export GOROOT=/home/tan/golang-1.22
 export PATH=$GOROOT/bin:~/go/bin:$PATH 
 
 # alias

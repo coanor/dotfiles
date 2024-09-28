@@ -8,3 +8,26 @@ alias ct_xthread='cargo test -- --test-thread='
 alias ct_ign='cargo test -- --ignored'
 alias rtags='rusty-tags vi'
 alias crb='cargo run --bin' # run example/tests under src/bin/*.rs
+
+alias cb='cargo build'
+alias ct_1th='cargo test -- --nocapture --test-threads=1 2>&1 | tee /tmp/ct'
+alias vct='vim /tmp/ct'
+alias ctr='cargo test -- --nocapture 2>&1 | tee /tmp/ct'
+
+function __cargo_test() {
+    echo "#----------------" > /tmp/ct
+    date >> /tmp/ct
+    echo "#----------------" >> /tmp/ct
+    RUST_BACKTRACE=1 cargo test -- --nocapture 2>&1 | tee -a /tmp/ct
+}
+
+alias ct='__cargo_test'
+
+function __cargo_test_run() {
+    echo "#----------------" > /tmp/ct
+    date >> /tmp/ct
+    echo "#----------------" >> /tmp/ct
+    RUST_BACKTRACE=1 cargo test $1 -- --nocapture 2>&1 | tee -a /tmp/ct
+}
+
+alias ctr='__cargo_test_run'
