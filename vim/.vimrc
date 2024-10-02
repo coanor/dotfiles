@@ -143,7 +143,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
-    colorscheme delek
+    colorscheme default
 catch
 endtry
 
@@ -400,3 +400,16 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+
+" vim plug
+call plug#begin()
+    Plug 'preservim/nerdtree'
+call plug#end()
+
+" nerdtree
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif

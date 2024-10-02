@@ -124,7 +124,7 @@ export GOPROXY=https://goproxy.cn,direct
 export KERNEL_SRC_VERSION=$(uname -r)
 export DK_BPF_KERNEL_SRC_PATH=/usr/src/linux-headers-${KERNEL_SRC_VERSION}
 
-source ~/.bash_alias
+source ~/.bash_alias.sh
 source ~/.golang_alias
 source ~/.rust_alias
 source ~/.gitprompt.sh
@@ -135,3 +135,8 @@ export NVM_DIR="$HOME/.nvm"
 . "$HOME/.cargo/env"
 
 export RUST_SRC_PATH=$(rustc --print sysroot)/lib/rustlib/src/rust/library/
+
+# git completion
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
