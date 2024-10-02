@@ -1,0 +1,10 @@
+[user]
+	email = some@one.com
+	name = some_one
+[core]
+	editor = vim
+[alias]
+	co = checkout
+	ci = commit
+	br = branch
+	st = status
