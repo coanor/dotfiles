@@ -135,3 +135,8 @@ export NVM_DIR="$HOME/.nvm"
 . "$HOME/.cargo/env"
 
 export RUST_SRC_PATH=$(rustc --print sysroot)/lib/rustlib/src/rust/library/
+
+# git completion
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi

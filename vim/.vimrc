@@ -149,7 +149,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
-    colorscheme delek
+    colorscheme default
 catch
 endtry
 
@@ -407,7 +407,6 @@ function! VisualSelection(direction, extra_filter) range
     let @" = l:saved_reg
 endfunction
 
-
 call plug#begin()
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'preservim/nerdtree'
@@ -418,9 +417,12 @@ Plug 'rust-lang/rust.vim'
 "Plug 'prabirshrestha/vim-lsp'
 call plug#end()
 
+"""""""""""""""""""""
 " rust
 let g:rustfmt_autosave = 1
 
+"""""""""""""""""""""
+" nerdtree
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-N> :NERDTreeToggle<CR>
@@ -430,4 +432,9 @@ if exists("g:loaded_webdevicons")
     call webdevicons#refresh()
 endif
 
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 set guifont="Hack Nerd Font Mono"
+
+"""""""""""""""""""""
+" ...
