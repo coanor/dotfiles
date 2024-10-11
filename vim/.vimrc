@@ -412,7 +412,7 @@ call plug#begin()
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'preservim/nerdtree'
 Plug 'rust-lang/rust.vim'
-Plug 'ryanoasis/vim-devicons' " nerd tree icon
+"Plug 'ryanoasis/vim-devicons' " nerd tree icon
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'dense-analysis/ale'
 "Plug 'prabirshrestha/vim-lsp'

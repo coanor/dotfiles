@@ -199,13 +199,57 @@ alias dk="sudo datakit"
 
 alias ta='tmux att'
 
+__arch() {
+    arch="arm64"
+
+    # Detect real OS/Arch
+    case $(uname -m) in
+        "x86_64")
+            arch="amd64"
+            ;;
+        "i386" | "i686")
+            arch="386"
+            ;;
+        "aarch64")
+            arch="arm64"
+            ;;
+        "arm" | "armv7l")
+            arch="arm"
+            ;;
+        "arm64")
+            arch="arm64"
+            ;;
+        *)
+            # shellcheck disable=SC2059
+            printf "${RED}[E] Unsupported arch $(uname -m) ${CLR}\n"
+            exit 1
+            ;;
+    esac
+
+    echo $arch
+}
+
+
+__os() {
+    os="linux"
+
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        os="darwin"
+    fi
+
+    echo $os
+}
+
 #
 # Debugging datakit
 #
 __ddk() {
-	DK_DEBUG_WORKDIR=~/datakit \
-		DK_DEBUG_MAX_RUN_DURATION=24h \
-		./dist/datakit-darwin-arm64/datakit 2>&1 | tee ~/datakit/stdout-stderr
+    os=$(__os)
+    arch=$(__arch)
+
+    DK_DEBUG_WORKDIR=~/datakit \
+        DK_DEBUG_MAX_RUN_DURATION=24h \
+        ./dist/datakit-$os-$arch/datakit $@
 }
 
 alias ddk_http_fail="ENV_DEBUG_HTTP_FAIL_RATIO=70 ENV_DEBUG_HTTP_FAIL_DURATION=2h __ddk"
@@ -213,15 +257,13 @@ alias ddk_with_expire="__ddk"
 alias ddk_with_expire_no_ptpool="DK_DEBUG_NO_POINT_POOL=1 __ddk"
 alias ddk_with_expire_no_ptpool_with_gc="DK_DEBUG_GC_DURATION=10s DK_DEBUG_MAX_RUN_DURATION=3m __ddk"
 
-alias ddk="__ddk"
-alias pbddk="ENV_POINT_PROTOBUF=1 __ddk"
-alias dk_dbginput="DK_DEBUG_WORKDIR=~/datakit __ddk_flag_debug ./dist/datakit-darwin-arm64/datakit debug --input-conf"
+alias ddk="__ddk  2>&1 | tee ~/datakit/stdout-stderr"
+alias dk="__ddk"
+alias ddql="__ddk dql"
+alias dkm="__ddk monitor -R3s --log ~/datakit/cmds.log --dump-metrics"
 
-alias ddql="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit dql"
-alias dk="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit"
-alias dkm="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit monitor -R3s --log ~/datakit/cmds.log --dump-metrics"
-alias dkmv="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit monitor -V -R3s --log ~/datakit/cmds.log --dump-metrics"
-alias dkmm="DK_DEBUG_WORKDIR=~/datakit ./dist/datakit-darwin-arm64/datakit monitor -R3s --log ~/datakit/cmds.log --dump-metrics -M "
+alias dkmv="__ddk monitor -V -R3s --log ~/datakit/cmds.log --dump-metrics"
+alias dkmm="__ddk monitor -R3s --log ~/datakit/cmds.log --dump-metrics -M "
 alias dkpm="curl -s http://localhost:19529/metrics | grep"
 alias ddw="DW_DEBUG_WORKDIR=~/dataway ./build/dataway-darwin-arm64/dataway -cfg ~/dataway/dw.yaml"
 alias ddw_docker="DW_DEBUG_WORKDIR=~/dataway DW_HTTP_CLIENT_TRACE=on DW_BIND=0.0.0.0:9528 DW_PROM_LISTEN=0.0.0.0:9091 DW_LOG_LEVEL=debug DW_REMOTE_HOST=https://kodo.guance.com:443 DW_UUID=not-set DW_TOKEN=tkn_2af4b19d7f5a489fa81f0fff7e63b588 DW_DEBUG_WORKDIR=~/dataway ./build/dataway-darwin-arm64/dataway --docker"
