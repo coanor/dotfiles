@@ -1,50 +1,6 @@
-##########################
-# go utils
-##########################
-
-# go profile
-__gtp() {
-	port=":10240"
-	if [ $# -gt 1 ]
-	then
-		port=${2}
-	fi
-
-	source ~/.golang-1.20
-
-	go tool pprof -http=${port} ${1}
-}
-alias gtp='__gtp'
-
-__gtb() {
-	if [ $# -gt 1 ]
-	then
-		LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -run XXX -test.benchmem -test.v -cpuprofile=$1.cpu.out -memprofile=$1.mem.out -benchtime=$2x -bench $1
-	else
-		LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -run XXX -test.benchmem -test.v -cpuprofile=$1.cpu.out -memprofile=$1.mem.out  -bench $1
-	fi
-}
-
-alias gtb='__gtb'
-
-#alias gtb='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -run XXX -test.benchmem -test.v -cpuprofile=cpu.out -memprofile=mem.out -bench'
-
-alias gr='go run'
-alias gv='go vet ./...'
-
-alias gmod2vendor='GO111MODULE=on go mod vendor -v'
-alias gmodinit='GO111MODULE=on go mod init'
-alias gmodwhy='go mod why -m'
-
-alias gget='GO111MODULE=on go get -v'
-alias gget_noprx='GOPROXY="" GO111MODULE=on go get -v'
-alias getg='GO111MODULE=off go get -v'
-alias dlvT='dlv test -- -test.v'
-
-# go build
-alias gb='go build -o a.out'
-alias ggb='GO111MODULE=on go build -o a.out'
-alias gbwin64='GO111MODULE=on GOOS=windows GOARCH=amd64 go build'
+source ~/.go.sh
+source ~/.dk.sh
+source ~/.docker.sh
 
 # datakit make for testing
 alias tmk='TESTING_METRIC_PATH=/tmp/testing.metrics DOCKER_REMOTE_HOST=10.200.14.142 make'
@@ -55,36 +11,22 @@ alias ut='UT_EXCLUDE_INTEGRATION_TESTING=on make ut | tee /tmp/ut'
 alias it='DOCKER_REMOTE_HOST=10.200.14.142 make ut DATAWAY_URL="https://openway.guance.com/v1/write/logging?token=tkn_2af4b19d7f5a489fa81f0fff7e63b588"'
 alias docker_gtr='CGO_CFLAGS=-Wno-undef-prefix TESTING_METRIC_PATH=/tmp/testing.metrics REMOTE_HOST=10.200.14.142 LOGGER_PATH=nul go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run'
 alias docker_gtr='CGO_CFLAGS=-Wno-undef-prefix TESTING_METRIC_PATH=/tmp/testing.metrics REMOTE_HOST=10.200.14.142 LOGGER_PATH=nul go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run'
-alias gtr='CGO_CFLAGS="-Wno-undef-prefix -Wno-deprecated-declarations" LOGGER_PATH=nul UT_EXCLUDE_INTEGRATION_TESTING=on CGO_CFLAGS=-Wno-undef-prefix go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run'
-alias gtrnolog='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run'
-alias wingtr='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix GOOS=windows go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run'
-alias gta='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -timeout 9999900m -cover -coverprofile=/tmp/coverage.out ./...'
-alias gtf='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -test.v -run=XXX -cover -fuzztime 1m -fuzz'
-
-__gtra() {
-	LOGGER_PATH=nul \
-		UT_EXCLUDE_INTEGRATION_TESTING=on \
-		CGO_CFLAGS=-Wno-undef-prefix \
-		go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run . | tee gtra.out # output to local gtra.out
-}
-
-
-alias gtra='__gtra'
-
-alias gtrall='CGO_CFLAGS=-Wno-undef-prefix go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run .'
-alias gtrb='CGO_CFLAGS=-Wno-undef-prefix go test -test.v -timeout 9999900m -run -bench'
-alias gtrll='CGO_CFLAGS=-Wno-undef-prefix go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run'
+#alias wingtr='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix GOOS=windows go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run'
+#alias gta='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -timeout 9999900m -cover -coverprofile=/tmp/coverage.out ./...'
+#alias gtf='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -test.v -run=XXX -cover -fuzztime 1m -fuzz'
+#
+#alias gtrb='CGO_CFLAGS=-Wno-undef-prefix go test -test.v -timeout 9999900m -run -bench'
+#alias gtrll='CGO_CFLAGS=-Wno-undef-prefix go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run'
 
 # bench with time 10s
 alias gtbt='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -run XXX -test.benchmem -benchtime=10s -test.v -bench'
 # bench with count 1000
 alias gtbx='LOGGER_PATH=nul CGO_CFLAGS=-Wno-undef-prefix go test -run XXX -test.benchmem -benchtime=1000x -test.v -bench'
 
-alias gtcover='CGO_CFLAGS=-Wno-undef-prefix go test -cover'
-alias gtcovershow='CGO_CFLAGS=-Wno-undef-prefix go test -v -timeout 9999900m -cover . -coverprofile=/tmp/coverage.out ; go tool cover -html=/tmp/coverage.out'
-alias covershow='go tool cover -html=/tmp/coverage.out'
-alias ggtr='CGO_CFLAGS=-Wno-undef-prefix GO111MODULE=off go test -test.v -timeout 9999900m -run'
-alias wgtr='CGO_CFLAGS=-Wno-undef-prefix GOOS=windows GOARCH=amd64 go test -test.v -timeout 9999900m -run'
+#alias gtcover='CGO_CFLAGS=-Wno-undef-prefix go test -cover'
+#alias gtcovershow='CGO_CFLAGS=-Wno-undef-prefix go test -v -timeout 9999900m -cover . -coverprofile=/tmp/coverage.out ; go tool cover -html=/tmp/coverage.out'
+#alias ggtr='CGO_CFLAGS=-Wno-undef-prefix GO111MODULE=off go test -test.v -timeout 9999900m -run'
+#alias wgtr='CGO_CFLAGS=-Wno-undef-prefix GOOS=windows GOARCH=amd64 go test -test.v -timeout 9999900m -run'
 
 alias gtc='CGO_CFLAGS=-Wno-undef-prefix go test -c'
 alias gtc_win64='CGO_CFLAGS=-Wno-undef-prefix GOOS=windows GOARCH=amd64 go test -c'
@@ -125,17 +67,6 @@ alias w3='watch -n 3'
 
 # golang project grep to ignore vendor dirs
 alias gag='ag -w --ignore-dir={vendor,}'
-
-alias dkr='sudo docker'
-alias dkrps='docker ps -a --format "{{.Names}},{{.Image}},{{.Status}}" | column -s, -t | sort'
-alias dkr-search='sudo docker search --no-trunc'
-#alias dkr-stats='dkr stats $(dkr ps --format={{.Names}})'
-alias dkr-stats='dkr stats --format="table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}\t{{.MemPerc}}"'
-alias dkr-log='dkr logs --tail 32'
-alias dkr-cp='dkr cp'
-alias dkr-tf='sudo docker logs -f --tail 32'
-alias dkrc='sudo docker-compose'
-
 alias agi='sudo apt-get install --yes'
 
 alias cdcoanor='cd ~/go/src/github.com/coanor/'
@@ -240,77 +171,36 @@ __os() {
     echo $os
 }
 
-#
-# Debugging datakit
-#
-__ddk() {
-    os=$(__os)
-    arch=$(__arch)
-
-    DK_DEBUG_WORKDIR=~/datakit \
-        DK_DEBUG_MAX_RUN_DURATION=24h \
-        ./dist/datakit-$os-$arch/datakit $@
-}
-
-alias ddk_http_fail="ENV_DEBUG_HTTP_FAIL_RATIO=70 ENV_DEBUG_HTTP_FAIL_DURATION=2h __ddk"
-alias ddk_with_expire="__ddk"
-alias ddk_with_expire_no_ptpool="DK_DEBUG_NO_POINT_POOL=1 __ddk"
-alias ddk_with_expire_no_ptpool_with_gc="DK_DEBUG_GC_DURATION=10s DK_DEBUG_MAX_RUN_DURATION=3m __ddk"
-
-alias ddk="__ddk  2>&1 | tee ~/datakit/stdout-stderr"
-alias dk="__ddk"
-alias ddql="__ddk dql"
-alias dkm="__ddk monitor -R3s --log ~/datakit/cmds.log --dump-metrics"
-
-alias dkmv="__ddk monitor -V -R3s --log ~/datakit/cmds.log --dump-metrics"
-alias dkmm="__ddk monitor -R3s --log ~/datakit/cmds.log --dump-metrics -M "
-alias dkpm="curl -s http://localhost:19529/metrics | grep"
 alias ddw="DW_DEBUG_WORKDIR=~/dataway ./build/dataway-darwin-arm64/dataway -cfg ~/dataway/dw.yaml"
 alias ddw_docker="DW_DEBUG_WORKDIR=~/dataway DW_HTTP_CLIENT_TRACE=on DW_BIND=0.0.0.0:9528 DW_PROM_LISTEN=0.0.0.0:9091 DW_LOG_LEVEL=debug DW_REMOTE_HOST=https://kodo.guance.com:443 DW_UUID=not-set DW_TOKEN=tkn_2af4b19d7f5a489fa81f0fff7e63b588 DW_DEBUG_WORKDIR=~/dataway ./build/dataway-darwin-arm64/dataway --docker"
-
-__ddk_docker() {
-	ENV_RECORDER_ENCODING=v1             \
-		ENV_ENABLE_RECORDER=on             \
-		ENV_RECORDER_CATEGORIES=metric     \
-		ENV_DEFAULT_ENABLED_INPUTS=dk      \
-		ENV_PPROF_LISTEN=localhost:26060   \
-		ENV_HTTP_LISTEN=localhost:29529    \
-		ENV_INPUT_DK_ENABLE_ALL_METRICS=on \
-		DK_DEBUG_WORKDIR=~/datakit-docker  \
-		./dist/datakit-darwin-arm64/datakit run -C
-}
-
-__dkm_docker() {
-	DK_DEBUG_WORKDIR=~/datakit-docker \
-		./dist/datakit-darwin-arm64/datakit monitor -R3s --log ~/datakit-docker/cmds.log
-}
-
-alias ddk_docker="__ddk_docker"
-alias dkm_docker="__dkm_docker"
 
 alias pj='python -m json.tool'
 alias rmf='rm -rf'
 
-__watch_dk_metrics() {
-	sleep=3
-	if [ $# -gt 1 ]
-	then
-		sleep=${2}
-	fi
-
-	host="localhost:19529"
-	if [ $# -gt 2 ]
-	then
-		host=$3
-	fi
-
-	watch -n ${sleep} "curl -s http://${host}/metrics | grep -a ${1}"
-}
-
-alias wdk='__watch_dk_metrics'
-
 alias mkdocs='/System/Volumes/Data/Users/tanbiao/Library/Python/3.8/bin/mkdocs'
 alias nproc="sysctl -n hw.logicalcpu"
+
+# preview markdown docs under mkdocs
+__md_preview() {
+	cwd=$(pwd)
+	mkdocs_demo_dir=/Users/tanbiao/git/mkdocs-demo
+	md_doc=$1
+	as=$1
+
+	if [ $# -gt 1 ]
+	then
+		as=$2
+	fi
+
+	port=$(shuf -i 40000-50000 -n 1)
+	echo "> date: $(date)" > $mkdocs_demo_dir/docs/en/$(basename $as)
+	cat $md_doc >> $mkdocs_demo_dir/docs/en/$(basename $as)
+	cd $mkdocs_demo_dir
+	./serve.sh
+	cd $cwd
+}
+
+alias mdv='__md_preview'
 
 alias until='while $@; do :; done'
 
@@ -330,14 +220,4 @@ alias entrans='trans -e bing -no-autocorrect :en'
 
 # k8s
 alias kc='kubectl'
-
-alias ds_dk_restart='kubectl rollout restart daemonset datakit -n datakit'
-alias dkpods='kubectl get pod -n datakit'
-
-__poddk() {
-	kubectl exec --stdin --tty $1 -n datakit -- /bin/bash
-}
-
-alias poddk='__poddk'
-
 #alias ctags="`brew --prefix`/bin/ctags"

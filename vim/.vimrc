@@ -1,6 +1,13 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Maintainer:
-"       Amir Salihefendic - @amix3k
+" Maintainer: 
+"       Amir Salihefendic
+"       http://amix.dk - amix@amix.dk
+"
+" Version: 
+"       6.0 - 01/04/17 14:24:34 
+"
+" Blog_post: 
+"       http://amix.dk/blog/post/19691#The-ultimate-Vim-configuration-on-Github
 "
 " Awesome_version:
 "       Get this config, nice color schemes and lots of plugins!
@@ -8,6 +15,12 @@
 "       Install the awesome version from:
 "
 "           https://github.com/amix/vimrc
+"
+" Syntax_highlighted:
+"       http://amix.dk/vim/vimrc.html
+"
+" Raw_version: 
+"       http://amix.dk/vim/vimrc.txt
 "
 " Sections:
 "    -> General
@@ -34,25 +47,27 @@
 set history=500
 
 " Enable filetype plugins
-filetype plugin on
-filetype plugin indent on
 filetype indent on
 
 " Set to auto read when a file is changed from the outside
 set autoread
-au FocusGained,BufEnter * checktime
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
+let g:mapleader = ","
 
 " Fast saving
 nmap <leader>w :w!<cr>
 
-" :W sudo saves the file
+" :W sudo saves the file 
 " (useful for handling the permission-denied error)
-command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+command W w !sudo tee % > /dev/null
 
+" disable syntax check, it takes long time for golang to check
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+nnoremap <C-w>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
+nnoremap <Leader>s :<C-u>call gitblame#echo()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -61,10 +76,14 @@ command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 set so=7
 
 " Avoid garbled characters in Chinese language windows OS
-let $LANG='en'
+let $LANG='en' 
 set langmenu=en
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
+
+" display spaces: see https://stackoverflow.com/a/29787362/342348
+" use `:set list` to show them, and `:set nolist` to hidden.
+set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
 
 " Turn on the Wild menu
 set wildmenu
@@ -77,7 +96,7 @@ else
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 endif
 
-" Always show current position
+"Always show current position
 set ruler
 
 " Height of the command bar
@@ -93,24 +112,23 @@ set whichwrap+=<,>,h,l
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases
+" When searching try to be smart about cases 
 set smartcase
 
 " Highlight search results
 set hlsearch
 
 " Makes search act like search in modern browsers
-set incsearch
+set incsearch 
 
 " Don't redraw while executing macros (good performance config)
-set lazyredraw
+set lazyredraw 
 
 " For regular expressions turn magic on
 set magic
 
 " Show matching brackets when text indicator is over them
-set showmatch
-
+set showmatch 
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
@@ -128,20 +146,11 @@ endif
 " Add a bit extra margin to the left
 set foldcolumn=1
 
-" Fold code blocks
-set foldenable
-set foldlevel=1
-set foldmethod=syntax
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
-syntax enable
-
-" Set regular expression engine automatically
-set regexpengine=0
+syntax enable 
 
 " Enable 256 colors palette in Gnome Terminal
 if $COLORTERM == 'gnome-terminal'
@@ -149,7 +158,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
-    colorscheme default
+    colorscheme desert
 catch
 endtry
 
@@ -164,53 +173,60 @@ if has("gui_running")
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
-set encoding=UTF-8
+set encoding=utf8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git etc. anyway...
+" Turn backup off, since most stuff is in SVN, git etc anyway...
 set nobackup
 set nowb
 set noswapfile
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use spaces instead of tabs
-set expandtab
+" Use tabs as it is
+set noexpandtab
+
+" Show line number
+set nu
+
+" fold code block
+set foldmethod=indent
 
 " Be smart when using tabs ;)
-set smarttab
+"set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 
 " Linebreak on 500 characters
 set lbr
-set tw=500
+set tw=5000
 
 set ai "Auto indent
 set si "Smart indent
-set nowrap "Wrap lines
-set nu "Line numbers 
+set nowrap "do not Wrap lines
 
-""""""""""""""""""""""""""""""
-" => Commands abbrevs
-""""""""""""""""""""""""""""""
+" set wrap for tex file
+augroup WrapLineInTeXFile
+	autocmd!
+	autocmd FileType tex setlocal wrap
+	"autocmd FileType markdown setlocal wrap
+augroup END
 
-cnoreabbrev mk make
-cnoreabbrev te tabe
-cnoreabbrev gr go run
-cnoreabbrev cb cargo build
-cnoreabbrev cr cargo run
-cnoreabbrev ct cargo test
+""""""""""""""""""""
+" move among wrapped lines
+""""""""""""""""""""
+noremap  <buffer> <silent> k gk
+noremap  <buffer> <silent> j gj
+noremap  <buffer> <silent> 0 g0
+noremap  <buffer> <silent> $ g$
 
 """"""""""""""""""""""""""""""
 " => Visual mode related
@@ -220,13 +236,12 @@ cnoreabbrev ct cargo test
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
-map <C-space> ?
+map <c-space> ?
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
@@ -250,23 +265,22 @@ map <leader>h :bprevious<cr>
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
-map <leader>t<leader> :tabnext<cr>
+map <leader>tm :tabmove 
+map <leader>t<leader> :tabnext 
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
-nmap <leader>tl :exe "tabn ".g:lasttab<CR>
+nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
-
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
-map <leader>te :tabedit <C-r>=escape(expand("%:p:h"), " ")<cr>/
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-" Specify the behavior when switching between buffers
+" Specify the behavior when switching between buffers 
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
@@ -281,7 +295,7 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " => Status line
 """"""""""""""""""""""""""""""
 " Always show the status line
-set laststatus=2
+set laststatus=6
 
 " Format the status line
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
@@ -315,9 +329,9 @@ fun! CleanExtraSpaces()
     call setreg('/', old_query)
 endfun
 
-if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
-endif
+"if has("autocmd")
+"    autocmd BufWritePre *.tex,*.go,*.txt,*.py,*.sh,*.md:call CleanExtraSpaces()
+"endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -348,11 +362,6 @@ map <leader>x :e ~/buffer.md<cr>
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Rust ctags. See https://github.com/dan-t/rusty-tags
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd BufRead *.rs :setlocal tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
-autocmd BufWritePost *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" | redraw!
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
@@ -368,27 +377,29 @@ endfunction
 " Don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
+   let l:currentBufNum = bufnr("%")
+   let l:alternateBufNum = bufnr("#")
 
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
+   if buflisted(l:alternateBufNum)
+     buffer #
+   else
+     bnext
+   endif
 
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
+   if bufnr("%") == l:currentBufNum
+     new
+   endif
 
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
+   if buflisted(l:currentBufNum)
+     execute("bdelete! ".l:currentBufNum)
+   endif
 endfunction
 
 function! CmdLine(str)
-    call feedkeys(":" . a:str)
-endfunction
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction 
 
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
@@ -407,34 +418,105 @@ function! VisualSelection(direction, extra_filter) range
     let @" = l:saved_reg
 endfunction
 
-call plug#begin()
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'preservim/nerdtree'
-Plug 'rust-lang/rust.vim'
-"Plug 'ryanoasis/vim-devicons' " nerd tree icon
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'dense-analysis/ale'
-"Plug 'prabirshrestha/vim-lsp'
-call plug#end()
+" Nerd tree
+map <C-n> :NERDTreeToggle<CR>
 
-"""""""""""""""""""""
-" rust
-let g:rustfmt_autosave = 1
+" Open vim with NERDTree automatically
+"autocmd VimEnter * NERDTree
 
-"""""""""""""""""""""
-" nerdtree
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-N> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+" TAB auto-completion
+let g:pumselect = 0
+inoremap <expr> <TAB> MaySelect()
 
-if exists("g:loaded_webdevicons")
-    call webdevicons#refresh()
+function MaySelect()
+	if (pumvisible())
+		let g:pumselect = 1
+		return "\<DOWN>"
+	endif
+	return "\<TAB>"
+endfunc
+
+inoremap <expr> <Space> MayComplete()
+
+function MayComplete()
+	if (pumvisible() && g:pumselect)
+		let g:pumselect = 1
+		return "\<CR>"
+	endif
+	return "\<Space>"
+endfunc
+
+" settings among different projects
+function! SetupEnvironment()
+	let l:path = expand('%:p')
+
+	if l:path =~ '/path/you/want'
+	elseif l:path =~ '/another/path/you/want'
+		setlocal ts=2 sw=2
+		set noexpandtab
+		set listchars=tab:\|\ 
+		set list
+		"hi NonText ctermfg=7 guifg=gray
+		"hi SpecialKey ctermfg=7 guifg=gray
+		filetype plugin off " disable replace \t as 4 space
+	endif
+endfunction
+autocmd! BufReadPost,BufNewFile * call SetupEnvironment()
+
+""""""""""""""""""""
+" pathogen
+" install: mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+""""""""""""""""""""
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
+
+""""""""""""""""""""
+" disable go-vim version warning
+""""""""""""""""""""
+let g:go_version_warning = 0
+
+""""""""""""""""""""
+" tab color settings
+""""""""""""""""""""
+hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen
+hi TabLine ctermfg=Blue ctermbg=Yellow
+hi TabLineSel ctermfg=Red ctermbg=Yellow
+
+" alias
+cnoreabbrev mk make
+cnoreabbrev te tabe 
+let g:go_def_mode='godef'
+let g:go_info_mode='gopls'
+
+autocmd BufNewFile,BufRead *.p set syntax=python
+let $BASH_ENV = "~/.bash_alias"
+
+" Highlight TODO, FIXME, NOTE, etc.
+if has('autocmd') && v:version > 701
+    augroup todo
+        autocmd!
+        autocmd Syntax * call matchadd(
+                    \ 'Debug',
+                    \ '\v\W\zs<(NOTE|INFO|IDEA|TODO|FIXME|CHANGED|XXX|BUG|HACK|TRICKY)>'
+                    \ )
+    augroup END
 endif
 
-" Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
-set guifont="Hack Nerd Font Mono"
+" setup ctags for C/C++ projects
+set tags=tags
 
-"""""""""""""""""""""
-" ...
+call plug#begin()
+
+" List your plugins here
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'rust-lang/rust.vim' " for rust
+
+Plug 'zivyangll/git-blame.vim'
+call plug#end()
+
+"""
+"set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+set fileencodings=utf-8,gb18030
+set termencoding=utf-8
+set encoding=utf-8
