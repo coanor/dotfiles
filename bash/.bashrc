@@ -127,7 +127,7 @@ export DK_BPF_KERNEL_SRC_PATH=/usr/src/linux-headers-${KERNEL_SRC_VERSION}
 source ~/.bash_alias.sh
 source ~/.golang_alias
 source ~/.rust_alias
-source ~/.gitprompt.sh
+source ~/.git-prompt.sh
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

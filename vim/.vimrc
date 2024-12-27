@@ -507,11 +507,10 @@ endif
 set tags=tags
 
 call plug#begin()
-
 " List your plugins here
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'rust-lang/rust.vim' " for rust
-
+Plug 'preservim/nerdtree'
 Plug 'zivyangll/git-blame.vim'
 call plug#end()
 
