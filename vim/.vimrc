@@ -467,9 +467,9 @@ autocmd! BufReadPost,BufNewFile * call SetupEnvironment()
 " pathogen
 " install: mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 """"""""""""""""""""
-execute pathogen#infect()
-syntax on
-filetype plugin indent on
+"execute pathogen#infect()
+"syntax on
+"filetype plugin indent on
 
 """"""""""""""""""""
 " disable go-vim version warning
@@ -506,12 +506,13 @@ endif
 " setup ctags for C/C++ projects
 set tags=tags
 
-call plug#begin()
+call plug#begin('~/.vim/plugged')
 " List your plugins here
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'rust-lang/rust.vim' " for rust
 Plug 'preservim/nerdtree'
 Plug 'zivyangll/git-blame.vim'
+Plug 'fatih/vim-go'
 call plug#end()
 
 """
