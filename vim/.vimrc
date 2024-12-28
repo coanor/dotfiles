@@ -157,10 +157,17 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-try
-    colorscheme desert
-catch
-endtry
+if has("unix") &&!has("macunix") " this is linux
+	try
+		colorscheme delek
+	catch
+	endtry
+else
+	try
+		colorscheme desert
+	catch
+	endtry
+endif
 
 set background=dark
 
