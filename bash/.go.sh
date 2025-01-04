@@ -98,3 +98,5 @@ __covershow() {
 }
 
 alias covershow='__covershow'
+
+alias gdbg='LOGGER_PATH=nul dlvT'
