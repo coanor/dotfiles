@@ -209,6 +209,7 @@ alias mdlint='markdown-link-check -p'
 # ssh nodes: 123.com
 alias ssh721='ssh tan@10.200.7.21'
 alias sshvm='ssh root@10.200.14.131'
+alias sshvmubt='ssh tb@10.200.14.132'
 alias aliecs='ssh root@47.98.119.69'
 alias ssh141='ssh root@10.200.14.141'
 alias ssh142='ssh root@10.200.14.142'
