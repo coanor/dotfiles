@@ -493,8 +493,10 @@ hi TabLineSel ctermfg=Red ctermbg=Yellow
 " alias
 cnoreabbrev mk make
 cnoreabbrev te tabe 
-let g:go_def_mode='godef'
-let g:go_info_mode='gopls'
+
+" Following gopls/godef settings may cause gopls not working
+" let g:go_def_mode='godef'
+" let g:go_info_mode='gopls'
 
 autocmd BufNewFile,BufRead *.p set syntax=python
 let $BASH_ENV = "~/.bash_alias"
@@ -527,3 +529,6 @@ call plug#end()
 set fileencodings=utf-8,gb18030
 set termencoding=utf-8
 set encoding=utf-8
+
+""" Performance related
+set maxmempattern=8192
