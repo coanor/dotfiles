@@ -522,6 +522,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'preservim/nerdtree'
 Plug 'zivyangll/git-blame.vim'
 Plug 'fatih/vim-go'
+Plug 'godlygeek/tabular'
 call plug#end()
 
 """
