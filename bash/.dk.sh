@@ -81,7 +81,7 @@ __br() {
 
 alias br='__br'
 
-alias dklint='make lint GOLINT_BINARY=golangci-lint-v1-46-2 > /tmp/dklint'
-alias dwlint='make lint GOLINT_BINARY=golangci-lint-v1-61-0 > /tmp/dwlint'
-alias dklint161='make lint GOLINT_BINARY=golangci-lint-v1-61-0 > /tmp/dklint'
-alias dwlint='make lint GOLINT_BINARY=golangci-lint-v1-61-0 > /tmp/dwlint'
+alias dklint='make lint GOLINT_BINARY=golangci-lint-v1-46-2 | tee /tmp/dklint'
+alias dwlint='make lint GOLINT_BINARY=golangci-lint-v1-61-0 | tee /tmp/dwlint'
+alias dklint161='make lint GOLINT_BINARY=golangci-lint-v1-61-0 | tee /tmp/dklint'
+alias dwlint='make lint GOLINT_BINARY=golangci-lint-v1-61-0 | tee /tmp/dwlint'

@@ -157,17 +157,23 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-if has("unix") &&!has("macunix") " this is linux
-	try
-		colorscheme delek
-	catch
-	endtry
-else
-	try
-		colorscheme desert
-	catch
-	endtry
-endif
+" set colors according to work days
+let g:weekly_themes = ['retrobox', 'evening', 'desert', 'habamax', 'slate', 'sorbet', 'torte']
+
+" get working day(0=sun,1=mon,...,6=sat)
+function! GetDayOfWeek()
+    return strftime("%w")
+endfunction
+
+" set colorscheme
+function! SetThemeByDay()
+    let day = GetDayOfWeek()
+    let theme_index = (day + 6) % 7
+    execute 'colorscheme ' . g:weekly_themes[theme_index]
+endfunction
+
+" set color during start
+autocmd VimEnter * call SetThemeByDay()
 
 set background=dark
 
