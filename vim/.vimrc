@@ -158,7 +158,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 " set colors according to work days
-let g:weekly_themes = ['retrobox', 'evening', 'desert', 'habamax', 'slate', 'sorbet', 'torte']
+let g:weekly_themes = ['ron', 'evening', 'desert', 'slate', 'torte']
 
 " get working day(0=sun,1=mon,...,6=sat)
 function! GetDayOfWeek()

@@ -115,13 +115,13 @@ export GOPROXY=https://goproxy.cn,direct
 export KERNEL_SRC_VERSION=$(uname -r)
 export DK_BPF_KERNEL_SRC_PATH=/usr/src/linux-headers-${KERNEL_SRC_VERSION}
 
+if [ -f ~/.golang_alias ]; then
+	source ~/.golang_alias
+fi
+
 # load Golang settings
 if [ -f ~/.golang ]; then
 	source ~/.golang
-fi
-
-if [ -f ~/.golang_alias ]; then
-	source ~/.golang_alias
 fi
 
 if [ -f ~/.bash_alias.sh ]; then
