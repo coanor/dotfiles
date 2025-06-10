@@ -83,6 +83,8 @@ alias cdinflux='cd ~/go/src/github.com/influxdata/'
 alias cdifcli='cd ~/go/src/github.com/coanor/ifcli'
 alias cdf='cd /usr/local/cloudcare/DataFlux'
 alias cdk='cd ~/go/src/gitlab.jiagouyun.com/cloudcare-tools/datakit/'
+# orbstack workdir of datakit
+alias cdkorb='cd /Users/$USER/OrbStack/centos/home/$USER/go/src/gitlab.jiagouyun.com/cloudcare-tools/datakit'
 alias cdw='cd ~/go/src/gitlab.jiagouyun.com/cloudcare-tools/dataway/'
 alias cdemo='cd ~/go/src/demo'
 alias cdguance='cd ~/go/src/gitlab.jiagouyun.com/guance'
@@ -177,20 +179,15 @@ alias ddw_docker="DW_DEBUG_WORKDIR=~/dataway DW_HTTP_CLIENT_TRACE=on DW_BIND=0.0
 alias pj='python -m json.tool'
 alias rmf='rm -rf'
 
-alias mkdocs='/System/Volumes/Data/Users/tanbiao/Library/Python/3.8/bin/mkdocs'
+alias mkdocs='/System/Volumes/Data/Users/$USER/Library/Python/3.8/bin/mkdocs'
 alias nproc="sysctl -n hw.logicalcpu"
 
 # preview markdown docs under mkdocs
 __md_preview() {
 	cwd=$(pwd)
-	mkdocs_demo_dir=/Users/tanbiao/git/mkdocs-demo
+	mkdocs_demo_dir=/Users/$USER/git/mkdocs-demo
 	md_doc=$1
-	as=$1
-
-	if [ $# -gt 1 ]
-	then
-		as=$2
-	fi
+	as=a.md
 
 	port=$(shuf -i 40000-50000 -n 1)
 	echo "> date: $(date)" > $mkdocs_demo_dir/docs/en/$(basename $as)

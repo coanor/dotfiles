@@ -21,8 +21,8 @@ config.color_scheme    =
 config.enable_tab_bar = true
 
 config.font = wezterm.font(
-	'JetBrains Mono',
-	-- 'Fira Code',
+	-- 'JetBrains Mono',
+	'Fira Code',
 	{ weight='Bold', italic=false}
 )
 

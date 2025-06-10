@@ -29,4 +29,3 @@ alias dkrc='sudo docker-compose'
 alias dkr-stats='dkr stats --format="table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}\t{{.MemPerc}}"'
 alias dkr-log='dkr logs --tail 32'
 alias dkr-cp='dkr cp'
-

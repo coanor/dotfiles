@@ -230,16 +230,34 @@ set nowrap "do not Wrap lines
 augroup WrapLineInTeXFile
 	autocmd!
 	autocmd FileType tex setlocal wrap
-	"autocmd FileType markdown setlocal wrap
+	"autocmd FileType markdown setlocal wrap # do not wrap on table lone-line, it's horriable.
 augroup END
 
 """"""""""""""""""""
 " move among wrapped lines
 """"""""""""""""""""
-noremap  <buffer> <silent> k gk
-noremap  <buffer> <silent> j gj
-noremap  <buffer> <silent> 0 g0
-noremap  <buffer> <silent> $ g$
+noremap <buffer> <silent> k gk
+noremap <buffer> <silent> j gj
+" make it works under visual/select mode
+vnoremap <buffer> <silent> j gj
+vnoremap <buffer> <silent> k gk
+
+" 确保映射在所有新建窗口应用
+augroup UniversalJKMappings
+    autocmd!
+    autocmd BufEnter * if &buftype == '' | call SetupWrapMappings()
+    autocmd WinEnter * if &buftype == '' | call SetupWrapMappings()
+augroup END
+
+function! SetupWrapMappings()
+    " 设置行移动
+    nnoremap <buffer> j gj
+    nnoremap <buffer> k gk
+endfunction
+
+" 防止NERDTree干扰
+let g:NERDTreeCreatePrefix = "silent keepalt keepjumps"
+let g:NERDTreeMinimalUI = 1
 
 """"""""""""""""""""""""""""""
 " => Visual mode related
