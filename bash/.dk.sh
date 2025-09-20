@@ -5,10 +5,21 @@
 __ddk() {
     os=$(__os)
     arch=$(__arch)
+		rm -rf ~/datakit/log
 
     DK_DEBUG_WORKDIR=~/datakit \
         DK_DEBUG_MAX_RUN_DURATION=24h \
         ./dist/datakit-$os-$arch/datakit $@
+}
+
+__dkc() {
+    os=$(__os)
+    arch=$(__arch)
+		rm -rf ~/datakit/log
+
+    DK_DEBUG_WORKDIR=~/datakit \
+        DK_DEBUG_MAX_RUN_DURATION=24h \
+        ./dist/datakit-$os-$arch/datakit run -C $@
 }
 
 __ddk_lambda_ext() {

@@ -42,8 +42,8 @@ alias gtbmem='CGO_CFLAGS=-Wno-undef-prefix go test -run XXX -memprofile=mem.out 
 alias githist='git log --follow -p --stat --'
 alias git-cmt-cnt='git rev-list HEAD --count'
 alias gitbr='git branch --sort=-committerdate'
-alias gpo='git push origin $(git rev-parse --abbrev-ref HEAD)'
-alias fgpo='git push -f origin $(git rev-parse --abbrev-ref HEAD)'
+alias gpo='git push -u origin $(git rev-parse --abbrev-ref HEAD)'
+alias fgpo='git push -u -f origin $(git rev-parse --abbrev-ref HEAD)'
 alias gbo='git pull origin $(git rev-parse --abbrev-ref HEAD)'
 
 alias v='vim'

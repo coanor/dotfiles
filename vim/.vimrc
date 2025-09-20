@@ -52,6 +52,8 @@ filetype indent on
 " Set to auto read when a file is changed from the outside
 set autoread
 
+set relativenumber
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
@@ -158,7 +160,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 " set colors according to work days
-let g:weekly_themes = ['ron', 'evening', 'desert', 'slate', 'torte']
+let g:weekly_themes = ['habamax', 'evening', 'desert', 'slate', 'torte']
 
 " get working day(0=sun,1=mon,...,6=sat)
 function! GetDayOfWeek()
@@ -167,9 +169,10 @@ endfunction
 
 " set colorscheme
 function! SetThemeByDay()
-    let day = GetDayOfWeek()
-    let theme_index = (day + 6) % 7
-    execute 'colorscheme ' . g:weekly_themes[theme_index]
+    " let day = GetDayOfWeek()
+    " let theme_index = (day + 6) % 7
+    " execute 'colorscheme ' . g:weekly_themes[theme_index]
+		colorscheme habamax
 endfunction
 
 " set color during start
