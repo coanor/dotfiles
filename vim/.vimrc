@@ -39,7 +39,6 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -542,6 +541,8 @@ endif
 " setup ctags for C/C++ projects
 set tags=tags
 
+"let g:oscyank_use_osc52 = 1
+
 call plug#begin('~/.vim/plugged')
 " List your plugins here
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -550,6 +551,7 @@ Plug 'preservim/nerdtree'
 Plug 'zivyangll/git-blame.vim'
 Plug 'fatih/vim-go'
 Plug 'godlygeek/tabular'
+"Plug 'ojroques/vim-oscyank'
 call plug#end()
 
 "let g:coc_disable_startup_warning = 1
@@ -587,3 +589,18 @@ function! s:show_documentation()
     call CocActionAsync('doHover')
   endif
 endfunction
+
+" 自定义 OSC 52 剪贴板功能 (绕过所有插件)
+" 定义一个函数，用于将可视模式下选中的内容发送到系统剪贴板
+function! SendToOSC52() range
+    " a:firstline 和 a:lastline 是 Vim 自动传入的范围
+    " 'silent' 隐藏命令输出, 'w !...' 将范围内的内容写入到外部命令的标准输入
+    " 我们使用 base64 -w0 来确保输出没有换行
+    silent execute a:firstline . ',' . a:lastline . 'w !base64 -w0 | tr -d ''\n'' | xargs -I {} printf "\e]52;c;{}\a"'
+    " 打印一个确认消息
+    echo strchars(getreg('"')) . ' characters copied to system clipboard.'
+endfunction
+
+" 在普通模式下，将 'yy' 映射为选中当前行并调用我们的函数
+vnoremap y :call SendToOSC52()<CR>
+nnoremap yy V:call SendToOSC52()<CR>
