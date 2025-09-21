@@ -159,7 +159,7 @@ endif
 
 if has("unix") &&!has("macunix") " this is linux
 	try
-		colorscheme delek
+		colorscheme desert
 	catch
 	endtry
 else
@@ -516,13 +516,17 @@ endif
 set tags=tags
 
 call plug#begin('~/.vim/plugged')
-" List your plugins here
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'rust-lang/rust.vim' " for rust
+" install coc.nvim
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" rust syntax support
+Plug 'rust-lang/rust.vim'
 Plug 'preservim/nerdtree'
 Plug 'zivyangll/git-blame.vim'
 Plug 'fatih/vim-go'
+Plug 'godlygeek/tabular'
 call plug#end()
+
+"let g:coc_disable_startup_warning = 1
 
 """
 "set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936

@@ -151,3 +151,9 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+set -o vi
+
+# clear screen
+bind -m vi-insert "\C-l":clear-screen # ctrl+l under insert mode
+bind -m vi-command '"\C-l":clear-screen' # ctrl+l under command mode
