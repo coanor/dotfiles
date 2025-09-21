@@ -23,13 +23,16 @@ __gtb() {
 		suffix="."$3 # add prefix `.' before suffix
 	fi
 
+	# -benchtime=${benchTime} 
+		#-count=10 \
+
 	CGO_CFLAGS=-Wno-undef-prefix \
 	go test -run XXX \
 	  -test.benchmem \
 	  -test.v \
 	  -cpuprofile=/tmp/B.${shortName}.cpu.out${suffix} \
 	  -memprofile=/tmp/B.${shortName}.mem.out${suffix} \
-	  -benchtime=${benchTime} -bench ${fullBenchmarkName} | tee /tmp/${shortName}.bench.out${suffix}
+	  -bench ${fullBenchmarkName} | tee /tmp/${shortName}.bench.out${suffix}
 
 	#echo "------------ P R E T T Y ------------"
 	#cat /tmp/${shortName}.bench.out${suffix} | column -t 
@@ -76,10 +79,12 @@ __gtr() {
 			-cpuprofile=/tmp/T.${shortTestName}.cpu \
 			-memprofile=/tmp/T.${shortTestName}.mem \
 			-cover -coverprofile=/tmp/${shortTestName}.cover 2>&1 | tee -a $out
+			#-httptest.serve=0.0.0.0:50000 \
 }
 
 alias gtrll='__gtr'
 alias gtr='LOGGER_PATH=nul __gtr' # disable code logging passed by test code
+alias gtrh='go test -test.v -timeout 9999900m -httptest.serve=0.0.0.0:50000 -run' # start httptest on localhost:50000
 
 # test all code under some package
 __gtra() {

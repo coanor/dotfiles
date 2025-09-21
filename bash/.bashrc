@@ -115,13 +115,13 @@ export GOPROXY=https://goproxy.cn,direct
 export KERNEL_SRC_VERSION=$(uname -r)
 export DK_BPF_KERNEL_SRC_PATH=/usr/src/linux-headers-${KERNEL_SRC_VERSION}
 
+if [ -f ~/.golang_alias ]; then
+	source ~/.golang_alias
+fi
+
 # load Golang settings
 if [ -f ~/.golang ]; then
 	source ~/.golang
-fi
-
-if [ -f ~/.golang_alias ]; then
-	source ~/.golang_alias
 fi
 
 if [ -f ~/.bash_alias.sh ]; then
@@ -147,6 +147,8 @@ fi
 if [ -f ~/.proxy.sh ]; then
   source ~/.proxy.sh
 fi
+
+set -o vi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

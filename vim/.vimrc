@@ -52,6 +52,8 @@ filetype indent on
 " Set to auto read when a file is changed from the outside
 set autoread
 
+set relativenumber
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
@@ -157,17 +159,24 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-if has("unix") &&!has("macunix") " this is linux
-	try
-		colorscheme desert
-	catch
-	endtry
-else
-	try
-		colorscheme desert
-	catch
-	endtry
-endif
+" set colors according to work days
+let g:weekly_themes = ['habamax', 'evening', 'desert', 'slate', 'torte']
+
+" get working day(0=sun,1=mon,...,6=sat)
+function! GetDayOfWeek()
+    return strftime("%w")
+endfunction
+
+" set colorscheme
+function! SetThemeByDay()
+    " let day = GetDayOfWeek()
+    " let theme_index = (day + 6) % 7
+    " execute 'colorscheme ' . g:weekly_themes[theme_index]
+		colorscheme habamax
+endfunction
+
+" set color during start
+autocmd VimEnter * call SetThemeByDay()
 
 set background=dark
 
@@ -224,16 +233,34 @@ set nowrap "do not Wrap lines
 augroup WrapLineInTeXFile
 	autocmd!
 	autocmd FileType tex setlocal wrap
-	"autocmd FileType markdown setlocal wrap
+	"autocmd FileType markdown setlocal wrap # do not wrap on table lone-line, it's horriable.
 augroup END
 
 """"""""""""""""""""
 " move among wrapped lines
 """"""""""""""""""""
-noremap  <buffer> <silent> k gk
-noremap  <buffer> <silent> j gj
-noremap  <buffer> <silent> 0 g0
-noremap  <buffer> <silent> $ g$
+noremap <buffer> <silent> k gk
+noremap <buffer> <silent> j gj
+" make it works under visual/select mode
+vnoremap <buffer> <silent> j gj
+vnoremap <buffer> <silent> k gk
+
+" 确保映射在所有新建窗口应用
+augroup UniversalJKMappings
+    autocmd!
+    autocmd BufEnter * if &buftype == '' | call SetupWrapMappings()
+    autocmd WinEnter * if &buftype == '' | call SetupWrapMappings()
+augroup END
+
+function! SetupWrapMappings()
+    " 设置行移动
+    nnoremap <buffer> j gj
+    nnoremap <buffer> k gk
+endfunction
+
+" 防止NERDTree干扰
+let g:NERDTreeCreatePrefix = "silent keepalt keepjumps"
+let g:NERDTreeMinimalUI = 1
 
 """"""""""""""""""""""""""""""
 " => Visual mode related
@@ -516,10 +543,9 @@ endif
 set tags=tags
 
 call plug#begin('~/.vim/plugged')
-" install coc.nvim
+" List your plugins here
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" rust syntax support
-Plug 'rust-lang/rust.vim'
+"Plug 'rust-lang/rust.vim' " for rust
 Plug 'preservim/nerdtree'
 Plug 'zivyangll/git-blame.vim'
 Plug 'fatih/vim-go'
@@ -536,3 +562,28 @@ set encoding=utf-8
 
 """ Performance related
 set maxmempattern=8192
+
+"----------- CoC.nvim Keymaps for LSP -----------
+
+" 使用 gd 跳转到定义 (Go to Definition)
+nmap <silent> gd <Plug>(coc-definition)
+
+" 使用 gy 跳转到类型定义 (Go to Type Definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+
+" 使用 gi 跳转到实现 (Go to Implementation)
+nmap <silent> gi <Plug>(coc-implementation)
+
+" 使用 gr 查看所有引用 (Go to References)
+nmap <silent> gr <Plug>(coc-references)
+
+" 使用 K 悬浮显示函数签名或文档
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocActionAsync('doHover')
+  endif
+endfunction

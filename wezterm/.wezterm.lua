@@ -9,17 +9,20 @@ local config = wezterm.config_builder()
 
 -- For example, changing the color scheme:
 config.color_scheme    =
-'zenburned'
+-- 'zenburned'
 -- 'Batman'
 -- 'AdventureTime'
 -- '3024 Night'
 -- 'Maia (Gogh)'
+-- 'Bamboo'
+-- 'Bamboo Multiplex'
+'Bamboo Blueberry'
 
 config.enable_tab_bar = true
 
 config.font = wezterm.font(
-	'JetBrains Mono',
-	-- 'Fira Code',
+	-- 'JetBrains Mono',
+	'Fira Code',
 	{ weight='Bold', italic=false}
 )
 
