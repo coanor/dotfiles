@@ -544,7 +544,7 @@ set tags=tags
 
 call plug#begin('~/.vim/plugged')
 " List your plugins here
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'rust-lang/rust.vim' " for rust
 Plug 'preservim/nerdtree'
 Plug 'zivyangll/git-blame.vim'
@@ -560,3 +560,28 @@ set encoding=utf-8
 
 """ Performance related
 set maxmempattern=8192
+
+"----------- CoC.nvim Keymaps for LSP -----------
+
+" 使用 gd 跳转到定义 (Go to Definition)
+nmap <silent> gd <Plug>(coc-definition)
+
+" 使用 gy 跳转到类型定义 (Go to Type Definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+
+" 使用 gi 跳转到实现 (Go to Implementation)
+nmap <silent> gi <Plug>(coc-implementation)
+
+" 使用 gr 查看所有引用 (Go to References)
+nmap <silent> gr <Plug>(coc-references)
+
+" 使用 K 悬浮显示函数签名或文档
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocActionAsync('doHover')
+  endif
+endfunction
