@@ -457,28 +457,6 @@ map <C-n> :NERDTreeToggle<CR>
 " Open vim with NERDTree automatically
 "autocmd VimEnter * NERDTree
 
-" TAB auto-completion
-let g:pumselect = 0
-inoremap <expr> <TAB> MaySelect()
-
-function MaySelect()
-	if (pumvisible())
-		let g:pumselect = 1
-		return "\<DOWN>"
-	endif
-	return "\<TAB>"
-endfunc
-
-inoremap <expr> <Space> MayComplete()
-
-function MayComplete()
-	if (pumvisible() && g:pumselect)
-		let g:pumselect = 1
-		return "\<CR>"
-	endif
-	return "\<Space>"
-endfunc
-
 " settings among different projects
 function! SetupEnvironment()
 	let l:path = expand('%:p')
@@ -590,17 +568,39 @@ function! s:show_documentation()
   endif
 endfunction
 
-" 自定义 OSC 52 剪贴板功能 (绕过所有插件)
-" 定义一个函数，用于将可视模式下选中的内容发送到系统剪贴板
-function! SendToOSC52() range
-    " a:firstline 和 a:lastline 是 Vim 自动传入的范围
-    " 'silent' 隐藏命令输出, 'w !...' 将范围内的内容写入到外部命令的标准输入
-    " 我们使用 base64 -w0 来确保输出没有换行
-    silent execute a:firstline . ',' . a:lastline . 'w !base64 -w0 | tr -d ''\n'' | xargs -I {} printf "\e]52;c;{}\a"'
-    " 打印一个确认消息
-    echo strchars(getreg('"')) . ' characters copied to system clipboard.'
-endfunction
+"" 自定义 OSC 52 剪贴板功能 (绕过所有插件)
+"" 定义一个函数，用于将可视模式下选中的内容发送到系统剪贴板
+"function! SendToOSC52() range
+"    " a:firstline 和 a:lastline 是 Vim 自动传入的范围
+"    " 'silent' 隐藏命令输出, 'w !...' 将范围内的内容写入到外部命令的标准输入
+"    " 我们使用 base64 -w0 来确保输出没有换行
+"    silent execute a:firstline . ',' . a:lastline . 'w !base64 -w0 | tr -d ''\n'' | xargs -I {} printf "\e]52;c;{}\a"'
+"    " 打印一个确认消息
+"    echo strchars(getreg('"')) . ' characters copied to system clipboard.'
+"endfunction
+"
+"" 在普通模式下，将 'yy' 映射为选中当前行并调用我们的函数
+"vnoremap y :call SendToOSC52()<CR>
+"nnoremap yy V:call SendToOSC52()<CR>
 
-" 在普通模式下，将 'yy' 映射为选中当前行并调用我们的函数
-vnoremap y :call SendToOSC52()<CR>
-nnoremap yy V:call SendToOSC52()<CR>
+" TAB auto-completion
+"let g:pumselect = 0
+"inoremap <expr> <TAB> MaySelect()
+"
+"function MaySelect()
+"	if (pumvisible())
+"		let g:pumselect = 1
+"		return "\<DOWN>"
+"	endif
+"	return "\<TAB>"
+"endfunc
+"
+"inoremap <expr> <Space> MayComplete()
+"
+"function MayComplete()
+"	if (pumvisible() && g:pumselect)
+"		let g:pumselect = 1
+"		return "\<CR>"
+"	endif
+"	return "\<Space>"
+"endfunc
