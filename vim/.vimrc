@@ -496,7 +496,7 @@ hi TabLineSel ctermfg=Red ctermbg=Yellow
 
 " alias
 cnoreabbrev mk make
-cnoreabbrev te tabe 
+cnoreabbrev te tabe
 
 " Following gopls/godef settings may cause gopls not working
 " let g:go_def_mode='godef'
@@ -523,16 +523,13 @@ set tags=tags
 
 call plug#begin('~/.vim/plugged')
 " List your plugins here
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'rust-lang/rust.vim' " for rust
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'rust-lang/rust.vim' " for rust
 Plug 'preservim/nerdtree'
 Plug 'zivyangll/git-blame.vim'
 Plug 'fatih/vim-go'
 Plug 'godlygeek/tabular'
-"Plug 'ojroques/vim-oscyank'
 call plug#end()
-
-"let g:coc_disable_startup_warning = 1
 
 """
 "set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
@@ -543,64 +540,24 @@ set encoding=utf-8
 """ Performance related
 set maxmempattern=8192
 
-"----------- CoC.nvim Keymaps for LSP -----------
-
-" 使用 gd 跳转到定义 (Go to Definition)
-nmap <silent> gd <Plug>(coc-definition)
-
-" 使用 gy 跳转到类型定义 (Go to Type Definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-
-" 使用 gi 跳转到实现 (Go to Implementation)
-nmap <silent> gi <Plug>(coc-implementation)
-
-" 使用 gr 查看所有引用 (Go to References)
-nmap <silent> gr <Plug>(coc-references)
-
-" 使用 K 悬浮显示函数签名或文档
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocActionAsync('doHover')
-  endif
-endfunction
-
-"" 自定义 OSC 52 剪贴板功能 (绕过所有插件)
-"" 定义一个函数，用于将可视模式下选中的内容发送到系统剪贴板
-"function! SendToOSC52() range
-"    " a:firstline 和 a:lastline 是 Vim 自动传入的范围
-"    " 'silent' 隐藏命令输出, 'w !...' 将范围内的内容写入到外部命令的标准输入
-"    " 我们使用 base64 -w0 来确保输出没有换行
-"    silent execute a:firstline . ',' . a:lastline . 'w !base64 -w0 | tr -d ''\n'' | xargs -I {} printf "\e]52;c;{}\a"'
-"    " 打印一个确认消息
-"    echo strchars(getreg('"')) . ' characters copied to system clipboard.'
-"endfunction
-"
-"" 在普通模式下，将 'yy' 映射为选中当前行并调用我们的函数
-"vnoremap y :call SendToOSC52()<CR>
-"nnoremap yy V:call SendToOSC52()<CR>
-
 " TAB auto-completion
-"let g:pumselect = 0
-"inoremap <expr> <TAB> MaySelect()
-"
-"function MaySelect()
-"	if (pumvisible())
-"		let g:pumselect = 1
-"		return "\<DOWN>"
-"	endif
-"	return "\<TAB>"
-"endfunc
-"
-"inoremap <expr> <Space> MayComplete()
-"
-"function MayComplete()
-"	if (pumvisible() && g:pumselect)
-"		let g:pumselect = 1
-"		return "\<CR>"
-"	endif
-"	return "\<Space>"
-"endfunc
+let g:pumselect = 0
+inoremap <expr> <TAB> MaySelect()
+
+function MaySelect()
+	if (pumvisible())
+		let g:pumselect = 1
+		return "\<DOWN>"
+	endif
+	return "\<TAB>"
+endfunc
+
+inoremap <expr> <Space> MayComplete()
+
+function MayComplete()
+	if (pumvisible() && g:pumselect)
+		let g:pumselect = 1
+		return "\<CR>"
+	endif
+	return "\<Space>"
+endfunc
