@@ -38,7 +38,7 @@ __gtb() {
 	#cat /tmp/${shortName}.bench.out${suffix} | column -t 
 }
 
-alias gtb='LOGGER_PATH=nul __gtb'
+alias gtb='LOGGER_PATH=nul LOGGER_LEVEL=info __gtb'
 alias gtbll='__gtb'
 alias gtba='__gtbV2 -T 100x -N'
 
@@ -162,14 +162,14 @@ alias gtrh='__gtr -httptest.serve=0.0.0.0:50000' # start httptest on localhost:5
 
 # test all code under some package
 __gtra() {
-	LOGGER_PATH=nul \
 		UT_EXCLUDE_INTEGRATION_TESTING=on \
 		CGO_CFLAGS=-Wno-undef-prefix \
 		go test -test.v -timeout 9999900m -cover -coverprofile=/tmp/coverage.out -run . | tee gtra.out # output to local gtra.out
 }
 
 
-alias gtra='__gtra'
+alias gtra='LOGGER_PATH=nul __gtra'
+alias gtrall='__gtra'
 
 # show golang test coverage in web
 __covershow() {
