@@ -1,6 +1,7 @@
 source ~/.go.sh
 source ~/.dk.sh
 source ~/.docker.sh
+source ~/.gitlab.sh
 
 # datakit make for testing
 alias tmk='TESTING_METRIC_PATH=/tmp/testing.metrics DOCKER_REMOTE_HOST=10.200.14.142 make'
@@ -180,13 +181,13 @@ alias ddw_docker="DW_DEBUG_WORKDIR=~/dataway DW_HTTP_CLIENT_TRACE=on DW_BIND=0.0
 alias pj='python -m json.tool'
 alias rmf='rm -rf'
 
-alias mkdocs='/System/Volumes/Data/Users/$USER/Library/Python/3.8/bin/mkdocs'
+#alias mkdocs='/System/Volumes/Data/Users/$USER/Library/Python/3.8/bin/mkdocs'
 alias nproc="sysctl -n hw.logicalcpu"
 
 # preview markdown docs under mkdocs
 __md_preview() {
 	cwd=$(pwd)
-	mkdocs_demo_dir=/Users/$USER/git/mkdocs-demo
+	mkdocs_demo_dir=~/git/mkdocs-demo
 	md_doc=$1
 	as=a.md
 

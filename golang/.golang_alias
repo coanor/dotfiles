@@ -2,11 +2,13 @@ export GO111MODULE=on
 # Set the GOPROXY environment variable
 export GOPRIVATE=gitlab.jiagouyun.com/*
 
-export GOPROXY=https://goproxy.io
+#export GOPROXY=https://goproxy.io
+export GOPROXY=https://goproxy.cn
+#export GOPROXY=https://proxy.golang.com.cn
 
 # 将 go 代码 clone 到 GOPATH 里面
 export GOPATH=/home/tan/go
-export GOROOT=/home/tan/golang-1.22
+export GOROOT=/home/tan/golang-1.25
 export PATH=$GOROOT/bin:~/go/bin:$PATH 
 
 # alias

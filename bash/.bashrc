@@ -143,7 +143,6 @@ if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
-# git completion
 if [ -f ~/.proxy.sh ]; then
   source ~/.proxy.sh
 fi
@@ -157,3 +156,8 @@ set -o vi
 # clear screen
 bind -m vi-insert "\C-l":clear-screen # ctrl+l under insert mode
 bind -m vi-command '"\C-l":clear-screen' # ctrl+l under command mode
+
+export EDITOR=vim
+
+# opencode
+export PATH=~/.opencode/bin:$PATH
