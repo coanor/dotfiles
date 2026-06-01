@@ -199,6 +199,12 @@ __md_preview() {
 	cd $cwd
 }
 
+__dashboad_query() {
+	cat $1 | jq  -c '.main.charts[].queries[].queries[]?.query | {field,q}'
+}
+
+alias dashboardq='__dashboad_query'
+
 alias mdv='__md_preview'
 
 alias until='while $@; do :; done'
@@ -221,3 +227,8 @@ alias entrans='trans -e bing -no-autocorrect :en'
 # k8s
 alias kc='kubectl'
 #alias ctags="`brew --prefix`/bin/ctags"
+
+# opencode
+alias oc="https_proxy=127.1:7890 opencode"
+alias codexa='codex --dangerously-bypass-approvals-and-sandbox'
+alias codexb='CODEX_HOME="$HOME/.codexb" codex --dangerously-bypass-approvals-and-sandbox'

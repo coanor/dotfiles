@@ -1,9 +1,9 @@
 # go profile
 __gtp() {
-	source ~/.golang-1.20
+	#source ~/.golang-1.20
 	port=$(shuf -i 40000-50000 -n 1)
 
-	go tool pprof -http=0.0.0.0:${port} ${1}
+	go tool pprof -http=127.0.0.1:${port} ${1}
 }
 alias gtp='__gtp'
 
