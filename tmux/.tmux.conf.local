@@ -296,3 +296,11 @@ bind C-a send-prefix
 # Keep <prefix> w as a fuzzy window switcher across sessions.
 bind-key w run-shell -b 'TMUX_FZF_SWITCH_CURRENT=1 ~/.tmux/plugins/tmux-fzf/scripts/window.sh switch'
 # END Codex prefix-w name sort
+
+# Resize panes with <prefix> + arrow keys.
+# `-r` allows holding an arrow key after prefix to keep resizing.
+set -sg repeat-time 600
+bind-key -r Left resize-pane -L 2
+bind-key -r Right resize-pane -R 2
+bind-key -r Up resize-pane -U 2
+bind-key -r Down resize-pane -D 2
